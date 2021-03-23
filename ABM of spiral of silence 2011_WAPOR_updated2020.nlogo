@@ -11,18 +11,7 @@
 ;; Plus, use the behaviorSpace to to perform experiments with models.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-turtles-own
-  [
-  flockmates     ;; agentset of nearby turtles
-  willingness-to-express
-  ]
-
-patches-own
-  [
-  patchmates     ;; patchset of nearby patches
-  media
-  ]
-
+;; step 1. define globals
 globals
 [marginal-change
  silent-people  ;; The number of people kept silenct(i.e. being coloured red).
@@ -30,6 +19,24 @@ globals
 
 
 
+;; step 2. define tutles-own
+turtles-own
+  [
+  flockmates     ;; agentset of nearby turtles
+  willingness-to-express
+  ]
+
+
+;; step 3. define patches-own
+patches-own
+  [
+  patchmates     ;; patchset of nearby patches
+  media
+  ]
+
+
+
+;; step 4. initialization
 to setup
    ;; (for this model to work with NetLogo's new plotting features,
   ;; __clear-all-and-reset-ticks should be replaced with clear-all at
@@ -54,6 +61,7 @@ to setup
    ]
 end
 
+;; step 5. define updating rules
 
 to find-flockmates  ;; turtle procedure
   set flockmates other turtles in-radius vision
@@ -75,12 +83,24 @@ to recolor  ;; turtle procedure
     [ set color green ] ;; if >=0, talk
     [ set color red
       set shape "person" ]  ;; esle, falling silent
-
-
 end
 
 
+to do-plots
+set-current-plot "Spiral of Silence"
+set-current-plot-pen "silent people"
+plot count turtles with [color = red]
+set-current-plot-pen "talking people"
+plot count turtles with [color = green]
 
+set-current-plot "Marginal Change"
+;;plot-pen-reset
+set-current-plot-pen "marginal-change"
+plot marginal-change * 10000
+end
+
+
+;; step 6. iterations
 
 to go
  ask turtles [ surveillance ]
@@ -99,18 +119,7 @@ end
 
 
 
-to do-plots
-set-current-plot "Spiral of Silence"
-set-current-plot-pen "silent people"
-plot count turtles with [color = red]
-set-current-plot-pen "talking people"
-plot count turtles with [color = green]
 
-set-current-plot "Marginal Change"
-;;plot-pen-reset
-set-current-plot-pen "marginal-change"
-plot marginal-change * 10000
-end
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
