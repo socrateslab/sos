@@ -25,7 +25,7 @@ patches-own
 
 globals
 [marginal-change
- silent-people  ; The number of people kept silenct(i.e. being coloured red).
+ silent-people  ;; The number of people kept silenct(i.e. being coloured red).
 ]
 
 
@@ -46,7 +46,7 @@ to setup
 
    ask patches ;;
    [ set pcolor random-float 1.5
-   set media (random 5 ) * media-amplifier  ;; Control media-amplifier to make faciliate the operation.
+     set media (random -5 ) * media-amplifier  ;; Control media-amplifier to make faciliate the operation.
    ]
    ask turtles   ;;to setup-turtles
    [
@@ -54,15 +54,39 @@ to setup
    ]
 end
 
+
 to find-flockmates  ;; turtle procedure
   set flockmates other turtles in-radius vision
 end
+
+
+to surveillance  ;; turtle procedure
+  find-flockmates
+  if any? flockmates
+    [
+        let mass-media  sum [media]  of patch-set [neighbors4] of  patch-here
+        let reference-group   sum [willingness-to-express] of flockmates
+        set marginal-change  alpha-media * mass-media + beta-reference-group * reference-group
+        set willingness-to-express   willingness-to-express + marginal-change]
+end
+
+to recolor  ;; turtle procedure
+  ifelse willingness-to-express >= 0
+    [ set color green ] ;; if >=0, talk
+    [ set color red
+      set shape "person" ]  ;; esle, falling silent
+
+
+end
+
+
+
 
 to go
  ask turtles [ surveillance ]
   reset-ticks
   show count turtles with [willingness-to-express >= 0]
-  set  silent-people count turtles with [willingness-to-express >= 0]
+  set  silent-people count turtles with [willingness-to-express < 0]
   ask turtles [ recolor ]
   ask turtles [stop]
    if (silent-people = population)
@@ -72,26 +96,11 @@ to go
   do-plots
 end
 
-to surveillance  ;; turtle procedure
-  find-flockmates
-  if any? flockmates
-    [
-        let moa  sum [media]  of patch-set [neighbors4] of  patch-here
-        let reference-group   sum [willingness-to-express] of flockmates
-        set marginal-change  alpha-media * moa + beta-reference-group * reference-group
-  set willingness-to-express   willingness-to-express + marginal-change]
-end
 
-to recolor  ;; turtle procedure
-  ifelse willingness-to-express >= 0
-    [ (set color red )  ( set shape "person" )]  ;; set the silent people's shape as "Person"
-    [ set color green ]
-
-end
 
 
 to do-plots
-set-current-plot "Spiral of silence"
+set-current-plot "Spiral of Silence"
 set-current-plot-pen "silent people"
 plot count turtles with [color = red]
 set-current-plot-pen "talking people"
@@ -114,11 +123,11 @@ end
 GRAPHICS-WINDOW
 451
 22
-958
-503
+966
+512
 -1
 -1
-13
+13.0
 1
 10
 1
@@ -136,7 +145,7 @@ GRAPHICS-WINDOW
 1
 1
 ticks
-30
+30.0
 
 BUTTON
 274
@@ -192,7 +201,7 @@ vision
 vision
 0
 10
-2
+2.0
 1
 1
 patches
@@ -207,7 +216,7 @@ population
 population
 0
 2000
-2000
+2000.0
 1
 1
 persons
@@ -218,19 +227,19 @@ PLOT
 203
 442
 396
-Spiral of silence
+Spiral of Silence
 time
 Number
-0
-10
-0
-300
+0.0
+10.0
+0.0
+300.0
 true
 true
 "" ""
 PENS
-"silent people" 1 0 -2674135 true "" ""
-"talking people" 1 0 -10899396 true "" ""
+"silent people" 1.0 0 -2674135 true "" ""
+"talking people" 1.0 0 -10899396 true "" ""
 
 SLIDER
 56
@@ -241,7 +250,7 @@ alpha-media
 alpha-media
 0
 0.01
-0.002
+0.001
 0.0001
 1
 NIL
@@ -256,7 +265,7 @@ media-amplifier
 media-amplifier
 1
 100
-1
+10.0
 1
 1
 NIL
@@ -271,7 +280,7 @@ beta-reference-group
 beta-reference-group
 0
 0.01
-0.0001
+0.001
 0.001
 1
 NIL
@@ -302,15 +311,16 @@ PLOT
 Marginal Change
 time
 marginal-change
-0
-10
-0
-10
+0.0
+10.0
+0.0
+10.0
 true
 false
 "" ""
 PENS
-"marginal-change" 1 0 -13345367 true "" ""
+"marginal-change" 1.0 0 -13345367 true "" ""
+
 @#$#@#$#@
 ## WHAT IS IT?
 
@@ -682,22 +692,22 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.2.0
+NetLogo 6.1.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
 default
-0
--0.2 0 0 1
-0 1 1 0
-0.2 0 0 1
+0.0
+-0.2 0 0.0 1.0
+0.0 1 1.0 0.0
+0.2 0 0.0 1.0
 link direction
 true
 0
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
 @#$#@#$#@
-
+0
 @#$#@#$#@
