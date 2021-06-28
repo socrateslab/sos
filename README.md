@@ -20,5 +20,7 @@
 
 本部分的数据分析主要使用R语言进行，详见``SOS Behavior Space.R``
 
+## 勘误：更新代码将媒介影响看成是-5到0的一个均匀分布
 
 
+https://github.com/socrateslab/sos/issues/2
