@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # SOS behavior space data analysis
 # 20121206
 # Cheng-Jun Wang @ cmc office
@@ -186,9 +187,9 @@ summary(fit)
 fit1 <- lm(dat$time ~ dat$group)
 summary(fit1)
 
-######################
-#~~~~~~~~~~~~~~~~~~~~~~~f test of group size~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-######################
+# #####################
+# ~~~~~~~~~~~~~~~~~~~~~~~f test of group size~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# #####################
 
 g2<-read.csv("RQ4V2.CSV",  header = T, sep = ",", stringsAsFactor=TRUE)
 g4<-read.csv("RQ4V4.CSV",  header = T, sep = ",", stringsAsFactor=TRUE)
